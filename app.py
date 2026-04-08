@@ -47,6 +47,7 @@ def top_page() -> None:
             "社内規定・FAQ ドキュメントを AI が検索して回答する RAG システム。"
             "問い合わせ対応の属人化を解消し、新人でも即日自己解決できる環境を実現します。"
         )
+        st.divider()
 
     with col2:
         st.page_link("pages/move_est_page.py", label="🚚 引越し見積もり")
