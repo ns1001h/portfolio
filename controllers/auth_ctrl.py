@@ -91,7 +91,7 @@ def render_login_page() -> None:
         login_url = build_login_url()
         st.markdown(
             f"""
-            <a href="{login_url}" target="_self" style="
+            <a href="{login_url}" target="_top" style="
                 display: inline-block;
                 background-color: #4285F4;
                 color: white;
