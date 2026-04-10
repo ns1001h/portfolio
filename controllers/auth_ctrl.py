@@ -89,8 +89,6 @@ def render_login_page() -> None:
         st.markdown("<br>", unsafe_allow_html=True)
 
         login_url = build_login_url()
-        # デバッグ用：完全なURLを表示（確認後に削除）
-        st.code(login_url, language=None)
         st.markdown(
             f"""
             <a href="{login_url}" target="_self" style="
