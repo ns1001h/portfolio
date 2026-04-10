@@ -89,11 +89,8 @@ def render_login_page() -> None:
         st.markdown("<br>", unsafe_allow_html=True)
 
         login_url = build_login_url()
-        # デバッグ用：URLのclient_idを確認（確認後に削除）
-        import urllib.parse as _up
-        _params = dict(_up.parse_qsl(_up.urlparse(login_url).query))
-        st.caption(f"client_id: `{_params.get('client_id', '(空)')}`")
-        st.caption(f"redirect_uri: `{_params.get('redirect_to', _params.get('redirect_uri', '(空)'))}`")
+        # デバッグ用：完全なURLを表示（確認後に削除）
+        st.code(login_url, language=None)
         st.markdown(
             f"""
             <a href="{login_url}" target="_self" style="
