@@ -1,9 +1,23 @@
 """経営ダッシュボードアプリのエントリーポイント。"""
 
 import streamlit as st
+from controllers.auth_ctrl import (
+    get_current_user,
+    handle_oauth_callback,
+    render_login_page,
+    render_sidebar_user,
+)
 
 # ページ設定
 st.set_page_config(page_title="業務効率化 AI ポートフォリオ", layout="wide")
+
+# OAuthコールバック処理（?code= があればここで処理）
+handle_oauth_callback()
+
+# 未ログインの場合はログインページを表示して終了
+if not get_current_user():
+    render_login_page()
+    st.stop()
 
 # 全ページ共通のトップパディング縮小
 st.markdown(
@@ -64,6 +78,9 @@ def top_page() -> None:
         )
         st.divider()
 
+
+# サイドバーにユーザー情報とログアウトボタンを表示
+render_sidebar_user()
 
 # ナビゲーション定義（ファイル名とは別にメニュー名を指定）
 pg = st.navigation({
