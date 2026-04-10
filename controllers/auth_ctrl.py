@@ -3,6 +3,7 @@
 from typing import Optional
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from models.auth import UserInfo
 from services.auth_service import exchange_code_for_user, get_google_oauth_url
@@ -89,22 +90,26 @@ def render_login_page() -> None:
         st.markdown("<br>", unsafe_allow_html=True)
 
         login_url = build_login_url()
-        st.markdown(
+        components.html(
             f"""
-            <a href="{login_url}" target="_top" style="
-                display: inline-block;
-                background-color: #4285F4;
-                color: white;
-                padding: 12px 24px;
-                border-radius: 6px;
-                text-decoration: none;
-                font-size: 16px;
-                font-weight: 600;
-            ">
+            <button
+                onclick="window.top.location.href='{login_url}'"
+                style="
+                    background-color: #4285F4;
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 6px;
+                    border: none;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    font-family: sans-serif;
+                "
+            >
                 🔐 &nbsp; Googleでログイン
-            </a>
+            </button>
             """,
-            unsafe_allow_html=True,
+            height=60,
         )
 
 
