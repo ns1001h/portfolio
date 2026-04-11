@@ -4,9 +4,9 @@ import streamlit as st
 from controllers.auth_ctrl import (
     get_current_user,
     handle_oauth_callback,
-    render_login_page,
     render_sidebar_user,
 )
+from pages.login_page import render_login_page
 
 # ページ設定
 st.set_page_config(page_title="業務効率化 AI ポートフォリオ", layout="wide")
