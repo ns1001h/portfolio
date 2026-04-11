@@ -10,6 +10,7 @@ from services.gemini_service import GeminiService
 from services.move_est_db_service import MoveEstDbService
 from services.move_est_vector_db_service import MoveEstVectorDbService
 from utils.config import get_config
+from utils.error_handler import show_api_error
 
 # 家具・荷物の選択肢リスト
 FURNITURE_ITEMS: list[str] = [
@@ -91,13 +92,7 @@ def move_est_page() -> None:
                     furniture=selected_furniture,
                 )
             except Exception as e:
-                error_msg: str = str(e)
-                if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
-                    st.warning("APIの利用制限に達しました。しばらく時間をおいてから再度お試しください。", icon="⏳")
-                elif "503" in error_msg or "UNAVAILABLE" in error_msg:
-                    st.warning("APIが一時的に混雑しています。しばらく時間をおいてから再度お試しください。", icon="⏳")
-                else:
-                    st.error(f"エラーが発生しました: {error_msg}", icon="🚫")
+                show_api_error(e)
                 return
 
         # ── 結果表示 ──

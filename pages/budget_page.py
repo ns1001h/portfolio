@@ -6,13 +6,18 @@ import pandas as pd
 import streamlit as st
 
 from controllers.budget_ctrl import BudgetCtrl
+from utils.error_handler import show_api_error
 
 ctrl: BudgetCtrl = BudgetCtrl()
 
 st.title("予算設定")
 
 # 営業担当リストを取得
-sales_reps: list[str] = ctrl.get_sales_reps()
+try:
+    sales_reps: list[str] = ctrl.get_sales_reps()
+except Exception as e:
+    show_api_error(e)
+    st.stop()
 
 # 年度リストを生成（現在年度 ± 2年）
 current_year: int = date.today().year
@@ -58,5 +63,8 @@ edited_margin: pd.DataFrame = st.data_editor(
 
 # 保存ボタン
 if st.button("保存", type="primary"):
-    ctrl.save_all(sales_reps, months, edited_amount, edited_margin)
-    st.success("保存しました！")
+    try:
+        ctrl.save_all(sales_reps, months, edited_amount, edited_margin)
+        st.success("保存しました！")
+    except Exception as e:
+        show_api_error(e)

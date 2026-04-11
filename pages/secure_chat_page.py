@@ -5,6 +5,7 @@ import streamlit as st
 from controllers.secure_chat_ctrl import SecureChatCtrl
 from models.pii_detection import PiiDetectionResult
 from services.gemini_service import GeminiService
+from utils.error_handler import show_api_error
 
 
 def init_session() -> None:
@@ -78,13 +79,7 @@ def handle_input(user_text: str) -> None:
             st.markdown(ai_text)
             st.session_state.secure_chat_history.append({"role": "model", "text": ai_text})
         except Exception as e:
-            error_msg: str = str(e)
-            if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
-                st.warning("APIの利用制限に達しました。しばらく時間をおいてから再度お試しください。", icon="⏳")
-            elif "503" in error_msg or "UNAVAILABLE" in error_msg:
-                st.warning("APIが一時的に混雑しています。しばらく時間をおいてから再度お試しください。", icon="⏳")
-            else:
-                st.error(f"エラーが発生しました: {error_msg}", icon="🚫")
+            show_api_error(e)
 
 
 def secure_chat_page() -> None:

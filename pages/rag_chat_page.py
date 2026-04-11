@@ -6,6 +6,7 @@ from controllers.rag_chat_ctrl import RagChatCtrl
 from services.gemini_service import GeminiService
 from services.rag_chat_vector_db_service import RagChatVectorDbService
 from utils.config import get_config
+from utils.error_handler import show_api_error
 
 
 def init_session() -> None:
@@ -63,13 +64,7 @@ def handle_input(user_text: str) -> None:
                     st.code(debug_info, language=None)
             st.session_state.rag_chat_history.append({"role": "assistant", "text": ai_text, "debug": debug_info})
         except Exception as e:
-            error_msg: str = str(e)
-            if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
-                st.warning("APIの利用制限に達しました。しばらく時間をおいてから再度お試しください。", icon="⏳")
-            elif "503" in error_msg or "UNAVAILABLE" in error_msg:
-                st.warning("APIが一時的に混雑しています。しばらく時間をおいてから再度お試しください。", icon="⏳")
-            else:
-                st.error(f"エラーが発生しました: {error_msg}", icon="🚫")
+            show_api_error(e)
 
 
 def rag_chat_page() -> None:

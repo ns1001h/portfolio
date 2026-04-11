@@ -8,20 +8,29 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from controllers.dashboard_ctrl import DashboardCtrl
+from utils.error_handler import show_api_error
 
 ctrl: DashboardCtrl = DashboardCtrl()
 
 st.title("経営ダッシュボード")
 
 # 年月リストを生成してセレクトボックスを表示
-months: list[str] = ctrl.get_months()
+try:
+    months: list[str] = ctrl.get_months()
+except Exception as e:
+    show_api_error(e)
+    st.stop()
 current_month: str = date.today().strftime("%Y-%m")
 default_month: str = current_month if current_month in months else months[-1]
 default_index: int = months.index(default_month)
 selected_month: str = st.selectbox("対象年月", months, index=default_index)
 
 # KPI集計
-kpi: dict = ctrl.get_kpi(selected_month)
+try:
+    kpi: dict = ctrl.get_kpi(selected_month)
+except Exception as e:
+    show_api_error(e)
+    st.stop()
 
 # KPIカード：売上・利益・利益率・案件数
 col1, col2, col3, col4 = st.columns(4)
